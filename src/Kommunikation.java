@@ -46,7 +46,7 @@ public class Kommunikation
 		}
 	}
 	
-	public void requestLogin(String[] user)
+	public User requestLogin(String[] user)
 	{
 		connect();
 		Object result = null;
@@ -69,9 +69,13 @@ public class Kommunikation
 		}
 		if(result == null)
 			System.out.println("Wrong login info");
-		else{
+		/*else{
 		
 			User schema = (User) result;
+			return schema;
+			
+			
+			
 			for(int y=1;y<53;y++)
 			{
 				for(int x=0;x<7;x++){
@@ -79,7 +83,7 @@ public class Kommunikation
 					" Dag: "+schema.getschema().get(y).get(x).day+" Vecka: "+ schema.getschema().get(y).get(x).week);
 					//System.out.println(((User) result).getSchema().get(1).getStart());
 				}
-			}
-		}
+			}*/
+		return (User) result;
 	}
 }

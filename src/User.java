@@ -1,6 +1,9 @@
 
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -36,5 +39,14 @@ public class User implements Cloneable, Serializable {
 	public HashMap<Integer, LinkedList<Day>> getschema()
 	{
 		return schema;
+	}
+	
+	public LinkedList<Day> getCurrentWeek()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("w");
+		Date date = new Date();
+		int x = Integer.parseInt(dateFormat.format(date));
+		LinkedList<Day> currentweek = schema.get(x);
+		return currentweek;
 	}
 }
