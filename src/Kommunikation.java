@@ -68,21 +68,29 @@ public class Kommunikation
 		}
 		if(result == null)
 			System.out.println("Wrong login info");
-		/*else{
-		
-			User schema = (User) result;
-			return schema;
-			
-			
-			
-			for(int y=1;y<53;y++)
-			{
-				for(int x=0;x<7;x++){
-					System.out.println(schema.getLogin().getUsername()+" Börjar klockan : "+schema.getschema().get(y).get(x).getStart()+
-					" Dag: "+schema.getschema().get(y).get(x).day+" Vecka: "+ schema.getschema().get(y).get(x).week);
-					//System.out.println(((User) result).getSchema().get(1).getStart());
-				}
-			}*/
 		return (User) result;
+	}
+
+	public String requestCheckIn() {
+		Object result = null;
+		try {
+			outStream.writeObject(new String[]{"checkin"});
+			try {
+				result = inStream.readObject();
+				}	catch(ClassNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+		}
+		catch(SocketException e)
+		{
+			System.out.println(e.toString());
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return (String) result;
+
 	}
 }

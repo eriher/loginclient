@@ -36,6 +36,10 @@ public class EventHandler {
 		user = komm.requestLogin(new String[]{"login",username,password});
 		makenewframe();
 	}
+	public void checkIn()
+	{
+		System.out.println(komm.requestCheckIn());
+	}
 
 
 	private void makenewframe() {
@@ -57,8 +61,16 @@ public class EventHandler {
 			panel1.add(dag);
 			panel2.add(starttid);
 		}
+		JButton checkin = new JButton("Check IN");
+		checkin.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						checkIn();
+			}
+		});
 		contentpane.add(panel1, BorderLayout.NORTH);
 		contentpane.add(panel2, BorderLayout.CENTER);
+		contentpane.add(checkin, BorderLayout.EAST);
 		contentpane.setPreferredSize(new Dimension(700,100));
 		frame.pack();
 		frame.setVisible(true);
