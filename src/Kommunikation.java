@@ -17,7 +17,7 @@ public class Kommunikation
 	
 	public Kommunikation()
 	{
-		
+		connect();
 	}
 
 	private void connect()
@@ -48,7 +48,6 @@ public class Kommunikation
 	
 	public User requestLogin(String[] user)
 	{
-		connect();
 		Object result = null;
 		try {
 			outStream.writeObject((String[]) user);
