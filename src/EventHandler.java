@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,15 +29,19 @@ public class EventHandler {
 	
 	public EventHandler()
 	{
-		komm = new Kommunikation();
+		
 	}
 	
 	
 	public void test(String username, String password)
 	{
+		komm = new Kommunikation();
 		user = (User)komm.communicate(new String[]{"login",username,password});
 		if(user == null)
+		{
+			komm.logout();
 			System.out.println("Wrong Login");
+		}
 		else
 		makenewframe();
 	}
@@ -100,16 +106,19 @@ public class EventHandler {
 			}
 		});
 		panel.add(createuser);
-		contentpane.add(panel1, BorderLayout.NORTH);
-		contentpane.add(new JLabel("This user: "+user.getLogin().getUsername()+" is Logged in"), BorderLayout.CENTER);
+		contentpane.add(panel1, BorderLayout.CENTER);
+		contentpane.add(new JLabel("This user is Logged in: "+user.getLogin().getUsername()), BorderLayout.NORTH);
 		contentpane.add(checkout, BorderLayout.WEST);
 		contentpane.add(checkin, BorderLayout.EAST);
 		contentpane.add(panel, BorderLayout.SOUTH);
-		contentpane.setPreferredSize(new Dimension(500,300));
 		frame.pack();
 		frame.setVisible(true);
 		frame.setResizable(false);
-		
+	    frame.addWindowListener(new WindowAdapter() {
+	        public void windowClosing(WindowEvent e) {
+	          komm.logout();
+	        }
+	      });	
 	}
 
 }

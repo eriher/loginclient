@@ -46,6 +46,17 @@ public class Kommunikation
 		}
 	}
 	
+	public void logout()
+	{
+		try {
+			outStream.close();
+			inStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public Object communicate(String[] user)
 	{
 		Object result = null;
@@ -68,53 +79,4 @@ public class Kommunikation
 		}
 		return result;
 	}
-	/*
-	public User requestLogin(String[] user)
-	{
-		Object result = null;
-		try {
-			outStream.writeObject((String[]) user);
-			try {
-				result = inStream.readObject();
-				}	catch(ClassNotFoundException e)
-				{
-					e.printStackTrace();
-				}
-		}
-		catch(SocketException e)
-		{
-			System.out.println(e.toString());
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		if(result == null)
-			System.out.println("Wrong login info");
-		return (User) result;
-	}
-
-	public Object requestCheckIn() {
-		Object result = null;
-		try {
-			outStream.writeObject(new String[]{"checkin"});
-			try {
-				result = inStream.readObject();
-				}	catch(ClassNotFoundException e)
-				{
-					e.printStackTrace();
-				}
-		}
-		catch(SocketException e)
-		{
-			System.out.println(e.toString());
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		return (Object) result;
-
-	}
-	*/
 }
