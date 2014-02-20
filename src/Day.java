@@ -1,6 +1,9 @@
 
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Day implements Serializable{
 	
@@ -21,17 +24,19 @@ public class Day implements Serializable{
 			day = y;
 		}
 		
-		public void setStartTime(String starttid){
+		public void setStart(String starttid){
 			this.starttid = starttid;
 		}
-		public void setSlutTid(String sluttid){
+		public void setSlut(String sluttid){
 			this.sluttid = sluttid;
 		}
-		public void setCheckIn(String checkin){
-			this.checkin = checkin;
+		public void setCheckIn(){
+			String  x = getTime();
+			this.checkin = x;
 		}
-		public void setCheckOut(String checkout){
-			this.checkout = checkout;
+		public void setCheckOut(){
+			String  x = getTime();
+			this.checkout = x;
 		}
 		public String day(){
 			return Integer.toString(day);
@@ -42,7 +47,23 @@ public class Day implements Serializable{
 		public String getStart(){
 			return starttid;
 		}
-
+		public String getSlut(){
+			return starttid;
+		}
+		public String getCheckIn()
+		{
+			return checkin;
+		}
+		public String getCheckOut()
+		{
+			return checkout;
+		}
+		private String getTime()
+		{
+			DateFormat dayFormat = new SimpleDateFormat("HH:mm");
+			Date date = new Date();
+			return dayFormat.format(date);
+		}
 }
 
 

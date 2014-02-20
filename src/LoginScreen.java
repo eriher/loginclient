@@ -59,6 +59,6 @@ public class LoginScreen extends JPanel {
 		frame.pack();
 		frame.setVisible(true);
 		frame.setResizable(false);
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

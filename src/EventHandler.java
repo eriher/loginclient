@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,12 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Locale;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +48,18 @@ public class EventHandler {
 	{
 		System.out.println((String)komm.communicate(command));
 	}
+	public  void newschedule(String[] strings)
+	{
+		for(int x=1;x<53;x++)
+		{
+			for(int y=0;y<7;y++)
+			{
+				user.getschema().get(x).get(y).setStart(strings[0]);
+				user.getschema().get(x).get(y).setSlut(strings[1]);
+			}
+		}
+		System.out.println((String)komm.communicate(new Object[]{"modifyschedule",user.getschema()}));
+	}
 
 
 	private void makenewframe() {
@@ -75,6 +86,7 @@ public class EventHandler {
 			panel5.add(tid);
 			panel1.add(panel5);
 		}
+		JPanel panel6 = new JPanel((new GridLayout(2,1)));
 		JButton checkin = new JButton("Check In");
 		checkin.addActionListener(
 				new ActionListener(){
@@ -82,8 +94,6 @@ public class EventHandler {
 						check(new String[]{"checkin"});
 			}
 		});
-		
-		
 		JButton checkout = new JButton("Check Out");
 		checkout.addActionListener(
 				new ActionListener(){
@@ -91,6 +101,8 @@ public class EventHandler {
 						check(new String[]{"checkout"});
 			}
 		});
+		panel6.add(checkin);
+		panel6.add(checkout);
 		JPanel panel = new JPanel((new GridLayout(3,2)));
 		final JTextField newusername = new JTextField();
 		final JPasswordField newpassword = new JPasswordField();
@@ -98,19 +110,39 @@ public class EventHandler {
 		panel.add(newusername);
 		panel.add(new JLabel("Password:"));
 		panel.add(newpassword);
+		final JComboBox<String> ualist = new JComboBox<String>();
+		ualist.addItem("User");
+		ualist.addItem("Boss");
+		ualist.addItem("Admin");
+		panel.add(ualist);
 		JButton createuser = new JButton("Create User");
 		createuser.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						check(new String[]{"createuser",newusername.getText(),new String (newpassword.getPassword())});
+						check(new String[]{"createuser",newusername.getText(),new String (newpassword.getPassword()),(String)ualist.getSelectedItem()});
 			}
 		});
 		panel.add(createuser);
+		JPanel panel3 = new JPanel((new GridLayout(3,2)));
+		final JTextField start = new JTextField();
+		final JTextField slut = new JTextField();
+		JButton mod = new JButton("Mod Schedule");
+		mod.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						newschedule(new String[]{start.getText(),slut.getText()});
+			}
+		});
+		panel3.add(new JLabel("Starttid:"));
+		panel3.add(start);
+		panel3.add(new JLabel("Sluttid:"));
+		panel3.add(slut);
+		panel3.add(mod);
 		contentpane.add(panel1, BorderLayout.CENTER);
 		contentpane.add(new JLabel("This user is Logged in: "+user.getLogin().getUsername()), BorderLayout.NORTH);
-		contentpane.add(checkout, BorderLayout.WEST);
-		contentpane.add(checkin, BorderLayout.EAST);
-		contentpane.add(panel, BorderLayout.SOUTH);
+		contentpane.add(panel6, BorderLayout.WEST);
+		contentpane.add(panel3, BorderLayout.SOUTH);
+		contentpane.add(panel, BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setResizable(false);

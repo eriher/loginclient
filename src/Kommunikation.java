@@ -12,8 +12,8 @@ public class Kommunikation
 {
 	
 	private Socket socket;
-	private static ObjectInputStream inStream;
-	private static ObjectOutputStream outStream;
+	private static ObjectInputStream in;
+	private static ObjectOutputStream out;
 	
 	public Kommunikation()
 	{
@@ -38,8 +38,8 @@ public class Kommunikation
 			return;
 		}
 		try {
-			outStream = new ObjectOutputStream(socket.getOutputStream());
-			inStream = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -49,21 +49,21 @@ public class Kommunikation
 	public void logout()
 	{
 		try {
-			outStream.close();
-			inStream.close();
+			out.close();
+			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	public Object communicate(String[] user)
+	public Object communicate(Object[] cmnd)
 	{
 		Object result = null;
 		try {
-			outStream.writeObject((String[]) user);
+			out.writeObject(cmnd);
 			try {
-				result = inStream.readObject();
+				result = in.readObject();
 				}	catch(ClassNotFoundException e)
 				{
 					e.printStackTrace();
