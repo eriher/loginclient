@@ -38,34 +38,34 @@ public class EventHandler {
 		user = (User)komm.communicate(new String[]{"login",username,password});
 		if(user == null)
 		{
-			komm.logout();
+			komm.disconnect();
 			System.out.println("Wrong Login");
 		}
 		else
 		makenewframe();
 	}
-	public void check(String[] command)
+	public void check(Object... command)
 	{
 		System.out.println((String)komm.communicate(command));
 	}
-	public  void newschedule(String[] strings)
+	public  void newschedule(Object...command)
 	{
 		for(int x=1;x<53;x++)
 		{
 			for(int y=0;y<7;y++)
 			{
-				user.getschema().get(x).get(y).setStart(strings[0]);
-				user.getschema().get(x).get(y).setSlut(strings[1]);
+				user.getschema().get(x).get(y).setStart((String)command[0]);
+				user.getschema().get(x).get(y).setSlut((String)command[1]);
 			}
 		}
-		System.out.println((String)komm.communicate(new Object[]{"modifyschedule",user.getschema()}));
+		check("modifyschedule",user.getschema());
 	}
 
 
 	private void makenewframe() {
 		
 		LinkedList<Day> week = user.getCurrentWeek();
-		JFrame frame =  new JFrame("TestScreen");
+		final JFrame frame =  new JFrame("TestScreen");
 		//frame.setPreferredSize(new Dimension(400,400));
 		Container contentpane = frame.getContentPane();
 		contentpane.setLayout(new BorderLayout());
@@ -91,14 +91,14 @@ public class EventHandler {
 		checkin.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						check(new String[]{"checkin"});
+						check("checkin");
 			}
 		});
 		JButton checkout = new JButton("Check Out");
 		checkout.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						check(new String[]{"checkout"});
+						check("checkout");
 			}
 		});
 		panel6.add(checkin);
@@ -119,24 +119,34 @@ public class EventHandler {
 		createuser.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						check(new String[]{"createuser",newusername.getText(),new String (newpassword.getPassword()),(String)ualist.getSelectedItem()});
+						check("createuser",newusername.getText(),new String (newpassword.getPassword()),(String)ualist.getSelectedItem());
 			}
 		});
 		panel.add(createuser);
-		JPanel panel3 = new JPanel((new GridLayout(3,2)));
-		final JTextField start = new JTextField();
-		final JTextField slut = new JTextField();
+		JPanel panel3 = new JPanel();
+		final JComboBox<String> starth = new JComboBox<String>();
+		final JComboBox<String> startm = new JComboBox<String>();
+		for(int x=0;x<10;x++)
+		starth.addItem("0"+Integer.toString(x));
+		for(int x=10;x<24;x++)
+		starth.addItem(Integer.toString(x));
+		startm.addItem("00");
+		startm.addItem("15");
+		startm.addItem("30");
+		startm.addItem("45");
 		JButton mod = new JButton("Mod Schedule");
 		mod.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						newschedule(new String[]{start.getText(),slut.getText()});
+						newschedule(starth.getSelectedItem()+":"+startm.getSelectedItem()
+								,"");
+						makenewframe();
+						frame.dispose();
 			}
 		});
 		panel3.add(new JLabel("Starttid:"));
-		panel3.add(start);
-		panel3.add(new JLabel("Sluttid:"));
-		panel3.add(slut);
+		panel3.add(starth);
+		panel3.add(startm);
 		panel3.add(mod);
 		contentpane.add(panel1, BorderLayout.CENTER);
 		contentpane.add(new JLabel("This user is Logged in: "+user.getLogin().getUsername()), BorderLayout.NORTH);
@@ -148,7 +158,7 @@ public class EventHandler {
 		frame.setResizable(false);
 	    frame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
-	          komm.logout();
+	          komm.disconnect();
 	        }
 	      });	
 	}

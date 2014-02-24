@@ -1,5 +1,10 @@
 
-
+/**
+ * Sets up connection to server and communicates.
+ * 
+ * @author Erik Hermansson
+ * @version 2014-02-21
+ */
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,11 +22,22 @@ public class Kommunikation
 	
 	public Kommunikation()
 	{
+		
 		connect();
 	}
 
-	private void connect()
+	/**
+	 * initiates connection
+	 */
+	public void connect()
 	{
+		/*String ip;
+		Integer port;
+		FileManagement.getInstance().openReadFile("config.txt");
+		String s = FileManagement.getInstance().readFile();
+		String[] sArr = s.split("\\n");
+		ip = String[0];
+		port = String[1];*/
 		InetAddress toAddr = null;
 		try 
 		{
@@ -45,8 +61,10 @@ public class Kommunikation
 			return;
 		}
 	}
-	
-	public void logout()
+	/**
+	 *		closes connections
+	 */
+	public void disconnect()
 	{
 		try {
 			out.close();
@@ -56,9 +74,12 @@ public class Kommunikation
 		}
 		
 	}
-	
+	/**
+	 * @param Object[] 
+	 *            Includes command and information.
+	 */
 	public Object communicate(Object[] cmnd)
-	{
+	{	
 		Object result = null;
 		try {
 			out.writeObject(cmnd);
